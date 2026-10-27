@@ -65,6 +65,6 @@ DB/auth sağlayıcısı, şema ve öğrenme algoritmaları bilinçli olarak seç
 
 .github/pull_request_template.md değişiklik bilgisini toplar. CI anahtar gerektirmeden check ve smoke çalıştırır. Branch koruması ve gerçek kullanıcılara CODEOWNERS ataması repo yöneticisi tarafından ayrıca yapılmalıdır.
 
-Repo başlangıçta commit içermediğinden main'e otomatik ilk commit atılmadı. PR hedef dalı için seçenekler [inceleme notunda](docs/REPOSITORY-INSPECTION.md).
+Repo başlangıçta boştu. Kullanıcı onayıyla main yalnızca boş başlangıç commit'iyle oluşturuldu; iskelet setup/shared-foundation-pr dalından PR ile incelenir. İlk setup/shared-foundation dalı korunur. [İnceleme ve başlangıç kararı](docs/REPOSITORY-INSPECTION.md).
 
 Derleyici: bu başlangıçta geliştirme ve production için Webpack, Tailwind için PostCSS kullanılır. Yerel Turbopack CSS alt işlemi hatası nedeniyle bu yol seçildi; sürümler kilit dosyasındadır.
