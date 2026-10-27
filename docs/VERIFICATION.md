@@ -11,5 +11,5 @@ Yerel ortam: Windows, Node.js 24.18.0, npm 11.16.0.
 - Paket kurulumu npm audit özeti: 0 vulnerability (kurulum anındaki kayıt).
 - Gerçek Nebius anahtarı/model erişimi bulunmadığından canlı NVIDIA inference çalıştırılmadı.
 
-CI aynı check + smoke komutlarını Node 24/Linux üzerinde çalıştıracak. Uzak CI sonucu henüz doğrulanmadı.
+GitHub CI Node 24/Linux üzerinde npm ci + check + smoke adımlarını başarıyla tamamladı: https://github.com/burakdgdvrn/LearnPilotAI/actions/runs/40500916985 (e00cafb).
 Sağlık kontrolü auth, DB veya gerçek inference readiness testi değildir.
