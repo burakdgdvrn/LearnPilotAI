@@ -1,0 +1,51 @@
+openapi: 3.1.0
+info:
+  title: LearnPilotAI Foundation API
+  version: 0.1.0
+  description: Liveness only. No learning or paid inference endpoints are implemented.
+paths:
+  /api/health:
+    get:
+      operationId: getHealth
+      summary: Application liveness, without upstream calls
+      security: []
+      responses:
+        "200":
+          description: Process is serving requests; does not prove AI or database readiness.
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                const: no-store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [status, service, ai]
+      properties:
+        status:
+          type: string
+          const: ok
+        service:
+          type: string
+          const: learnpilotai
+        ai:
+          type: object
+          additionalProperties: false
+          required: [provider, configurationValid, finalMode, inferenceVerified]
+          properties:
+            provider:
+              type: string
+              enum: [mock, nebius, invalid]
+            configurationValid:
+              type: boolean
+            finalMode:
+              type: boolean
+            inferenceVerified:
+              type: boolean
+              const: false
