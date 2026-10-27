@@ -13,4 +13,5 @@ setup/shared-foundation-pr bu boş commit'ten türetildi; kontrol edilmiş iskel
 Taşıma sonrasında kaynak ağacının eski dalla aynı olduğu Git tree kimlikleriyle doğrulandı.
 İlk setup/shared-foundation dalı değiştirilmedi, silinmedi veya force push yapılmadı.
 Yeni kurulum dalının main'e PR'ı ekip incelemesi içindir; otomatik merge yapılmaz.
-main repo varsayılan dalı olarak ayarlanır. Branch protection ve gerçek kişilere sahip atamaları yönetici tarafından ayrıca etkinleştirilmelidir.
+PR: https://github.com/burakdgdvrn/LearnPilotAI/pull/1 (hedef main, kaynak setup/shared-foundation-pr).
+Varsayılan dal değişikliği bu oturumda tamamlanamadı; repo hâlâ setup/shared-foundation kullanıyor. Yönetici varsayılan dalı main yapmalı; branch protection ve gerçek kişilere sahip atamalarını ayrıca etkinleştirmelidir.
