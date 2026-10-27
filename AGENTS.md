@@ -4,8 +4,8 @@
 1. README.md, docs/TEAM.md, docs/API.md ve çalışacağın modülün README.md dosyasını oku.
 2. Git durumunu ve mevcut kodu incele. Başkasının değişikliğini silme, resetleme veya yeniden scaffold etme.
 3. Tek görevlik dal kullan: feat/frontend-*, feat/api-*, feat/db-*, feat/ai-*, feat/learning-*.
-4. Her modülün tek sahibi vardır. docs/TEAM.md içindeki koltukları gerçek ekip üyeleriyle eşleştirin; isim uydurmayın.
-5. Sahibi olmadığın alanda değişiklik gerekiyorsa önce ilgili sahibiyle sözleşme ve dosya sınırlarını kararlaştır.
+4. Alan ekipleri README.md ve docs/TEAM.md içinde aynıdır: frontend Mete/Asude; backend Mete/Burak/Asude; DB/auth ve AI İclal/Çağrı; learning Burak. GitHub hesabı veya ekip lideri uydurmayın.
+5. Her görev için alan ekibinden tek yürütücü belirleyin. Ortak alanlarda da görev başına tek yürütücü vardır; aynı dosyayı paralel düzenlemeyin. Alan dışı değişiklikte ilgili ekiple sözleşme ve dosya sınırlarını kararlaştırın; PR incelemesini bu ekipten isteyin.
 
 ## Ortak sınırlar
 - src/app yönlendirme/kompozisyon; frontend sahibi sayfaları, backend sahibi app/api rotalarını yönetir.
@@ -15,6 +15,7 @@
 - API değişikliğinde önce docs/API.md + docs/openapi.yaml + ilgili DTO'yu güncelle.
 - Yeni paid inference endpoint'i eklemeden kimlik doğrulama, kota, girdi doğrulama ve hata eşleme üzerinde backend/DB/AI sahipleri anlaşmalı.
 - DB/auth, frontend, learning algoritmaları veya tam AI ürün akışı bu başlangıç görevinin kapsamına girmez.
+- İlk öğrenme planı endpoint'i yalnızca açıkça etiketli geliştirme fixture'ıdır; Nebius/final modunda 503 döner. Auth/kota anlaşması olmadan ücretli inference'a bağlamayın.
 
 ## AI ve gizli değerler
 - Mock yalnızca geliştirme fixture'ıdır. Mock çıktısını gerçek AI veya final demo başarısı diye sunma.
