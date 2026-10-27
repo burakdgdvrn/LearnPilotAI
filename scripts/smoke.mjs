@@ -29,7 +29,26 @@ try {
   const home = await fetch("http://127.0.0.1:3107");
   assert.equal(home.status, 200);
   assert.match(await home.text(), /LEARNPILOTAI/);
-  console.log("Production homepage and health smoke checks passed.");
+  const planResponse = await fetch("http://127.0.0.1:3107/api/learning/plan", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic: "  Kesirler  ", level: "beginner" }),
+  });
+  assert.equal(planResponse.status, 200);
+  assert.equal(planResponse.headers.get("cache-control"), "no-store");
+  const plan = await planResponse.json();
+  assert.deepEqual(plan.plan.goal, { topic: "Kesirler", level: "beginner" });
+  assert.equal(plan.plan.steps.length, 3);
+  assert.ok(plan.plan.steps.every(step => step.title.startsWith("[MOCK]")));
+  assert.match(plan.preview, /MOCK — no inference/);
+  assert.deepEqual(plan.ai, { provider: "mock", mocked: true, inferenceVerified: false });
+  const invalidResponse = await fetch("http://127.0.0.1:3107/api/learning/plan", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topic: " ", level: "expert" }),
+  });
+  assert.equal(invalidResponse.status, 400);
+  assert.equal(invalidResponse.headers.get("cache-control"), "no-store");
+  assert.equal((await invalidResponse.json()).error.code, "VALIDATION_ERROR");
+  console.log("Production homepage, health and mocked learning plan smoke checks passed.");
 } catch (error) {
   console.error(output);
   throw error;

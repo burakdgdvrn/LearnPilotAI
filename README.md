@@ -15,7 +15,13 @@ npm run dev
 PowerShell'de kopyalama: `Copy-Item .env.example .env.local`.
 [Uygulama](http://localhost:3000), [sağlık](http://localhost:3000/api/health).
 
-Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfa başlangıç ekranıdır; henüz öğrenme planı, giriş veya inference arayüzü yoktur. Sağlık endpoint'i ücretli çağrı yapmaz ve gerçek inference başarısını kanıtlamaz.
+Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfa başlangıç ekranıdır; henüz öğrenme planı, giriş veya inference arayüzü yoktur. Backend `POST /api/learning/plan` ile konu/seviye alıp açıkça etiketli başlangıç planı fixture'ı döndürür. Sağlık endpoint'i ücretli çağrı yapmaz ve gerçek inference başarısını kanıtlamaz.
+
+```sh
+curl -X POST http://localhost:3000/api/learning/plan -H "Content-Type: application/json" -d '{"topic":"Kesirler","level":"beginner"}'
+```
+
+Bu plan üç sabit mock adımdır; kullanıcı verisi saklanmaz. Nebius/final modunda endpoint 503 verir ve inference çağırmaz. Auth/kota ve gerçek plan üretimi ayrı entegrasyon bekler. Girdi sınırları ve hata yanıtları [API sözleşmesinde](docs/API.md).
 
 ## Komutlar
 
@@ -24,15 +30,15 @@ Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfa başlangıç ekranıdı
 | npm run dev | Geliştirme sunucusu |
 | npm run lint | ESLint |
 | npm run typecheck | Rota tiplerini üret + TypeScript |
-| npm test | Provider ve final mod sınır testleri; ağ kullanmaz |
+| npm test | Provider, plan API/fixture ve final mod sınır testleri; ağ kullanmaz |
 | npm run build | Production build |
 | npm run check | Lint + tip + test + build |
-| npm run smoke | Build sonrası geçici production sunucusunda ana sayfa ve health kontrolü |
+| npm run smoke | Build sonrası geçici production sunucusunda ana sayfa, health ve plan API kontrolü |
 | npm run ai:verify | Gerçek Nebius çağrısı; mock modda başarısız, kredi tüketebilir |
 
 ## Yapı ve sahiplik
 
-| Alan | Yol | Sorumlu |
+| Alan | Yol | Sorumlu ekip |
 | --- | --- | --- |
 | Frontend | src/frontend, src/app sayfaları | Koltuk 1 — Mete, Asude |
 | Backend / API | src/server/api, src/app/api | Koltuk 2 — Mete, Burak, Asude |
@@ -41,7 +47,8 @@ Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfa başlangıç ekranıdı
 | Learning engine | src/server/learning-engine | Koltuk 5 — Burak |
 | Ortak DTO ve sözleşme | src/contracts, docs/API.md | Backend koordine eder, etkilenen sahipler inceler |
 
-İsim atamaları ve ilk işler: [TEAM](docs/TEAM.md). Agent talimatları: [AGENTS](AGENTS.md).
+Her görevde ilgili ekipten tek yürütücü belirlenir; bu kural ortak sözleşme, config ve doküman dosyaları için de geçerlidir. Aynı dosyada paralel düzenleme yapılmaz. Tablodaki birden fazla üye ortak görev yürütücüsü veya atanmış tek lider anlamına gelmez.
+Ekip dağılımı ve ilk işler: [TEAM](docs/TEAM.md). Agent talimatları: [AGENTS](AGENTS.md).
 [API sözleşmesi](docs/API.md), [OpenAPI](docs/openapi.yaml).
 
 ## Mock ve final hackathon ayrımı
@@ -57,8 +64,8 @@ DB/auth sağlayıcısı, şema ve öğrenme algoritmaları bilinçli olarak seç
 
 ## Ekip iş akışı
 
-1. Alan sahibini atayın, küçük görevleri issue'lara ayırın.
-2. main güncelken kendi alanınızın dalını açın; ortak DTO'ları önce kararlaştırın.
+1. Küçük görevleri issue'lara ayırın; her göreve alan ekibinden tek yürütücü belirleyin.
+2. main güncelken kendi alanınızın dalını açın; ortak DTO'ları önce kararlaştırın. Bağımlı PR henüz merge edilmediyse onun dalı üzerine inceleme PR'ı açın ve bağımlılığı belirtin.
 3. Modülünüzü ve modül README'sini birlikte güncelleyin.
 4. Kontrolleri çalıştırın, PR açın; ilgili sahip incelemeden merge etmeyin.
 5. Son entegrasyon ve demo provası beş kişi birlikte yapılır.

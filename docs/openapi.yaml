@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
   title: LearnPilotAI Foundation API
-  version: 0.1.0
-  description: Liveness only. No learning or paid inference endpoints are implemented.
+  version: 0.2.0
+  description: Liveness and explicitly mocked initial learning plans. No paid inference or auth.
 paths:
   /api/health:
     get:
@@ -21,8 +21,149 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthResponse"
+  /api/learning/plan:
+    post:
+      operationId: createInitialLearningPlan
+      summary: Initial learning plan development fixture; unavailable in Nebius/final mode
+      description: Maximum 4096 UTF-8 body bytes. No persistence or network calls. All handler responses use Cache-Control no-store. Raw topic has 1–120 Unicode code points; reject control/format characters, then trim and reject blank topics. Fixture IDs do not identify persisted resources.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitialLearningPlanRequest"
+      responses:
+        "200":
+          description: Explicitly mocked, non-persistent plan and AI preview.
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                const: no-store
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitialLearningPlanResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+        "413":
+          $ref: "#/components/responses/PayloadTooLarge"
+        "415":
+          $ref: "#/components/responses/UnsupportedMediaType"
+        "503":
+          $ref: "#/components/responses/LearningPlanUnavailable"
+        "500":
+          $ref: "#/components/responses/InternalError"
 components:
+  responses:
+    ValidationError:
+      description: Invalid UTF-8, JSON or fields; code VALIDATION_ERROR.
+      headers: &noStoreHeaders
+        Cache-Control:
+          schema:
+            type: string
+            const: no-store
+      content: &errorContent
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LearningPlanErrorResponse"
+    PayloadTooLarge:
+      description: Body exceeds 4096 bytes; code PAYLOAD_TOO_LARGE.
+      headers: *noStoreHeaders
+      content: *errorContent
+    UnsupportedMediaType:
+      description: Missing or unsupported Content-Type; code UNSUPPORTED_MEDIA_TYPE.
+      headers: *noStoreHeaders
+      content: *errorContent
+    LearningPlanUnavailable:
+      description: Invalid configuration, Nebius/final mode or AI failure; code LEARNING_PLAN_UNAVAILABLE. No fallback.
+      headers: *noStoreHeaders
+      content: *errorContent
+    InternalError:
+      description: Unexpected planning failure; code INTERNAL_ERROR.
+      headers: *noStoreHeaders
+      content: *errorContent
   schemas:
+    InitialLearningPlanRequest:
+      type: object
+      additionalProperties: false
+      required: [topic, level]
+      properties:
+        topic:
+          type: string
+          description: Raw value has 1–120 Unicode code points and no control/format characters. Leading/trailing whitespace is trimmed; blank topics are rejected.
+          minLength: 1
+          maxLength: 120
+          pattern: '^[^\p{Cc}\p{Cf}]+$'
+          allOf:
+            - pattern: '\S'
+        level:
+          type: string
+          enum: [beginner, intermediate, advanced]
+    InitialLearningPlanResponse:
+      type: object
+      additionalProperties: false
+      required: [plan, preview, ai]
+      properties:
+        plan:
+          $ref: "#/components/schemas/LearningPlan"
+        preview:
+          type: string
+          description: Plain text explicitly labelled MOCK; never render as HTML.
+        ai:
+          type: object
+          additionalProperties: false
+          required: [provider, mocked, inferenceVerified]
+          properties:
+            provider:
+              type: string
+              const: mock
+            mocked:
+              type: boolean
+              const: true
+            inferenceVerified:
+              type: boolean
+              const: false
+    LearningPlan:
+      type: object
+      additionalProperties: false
+      required: [id, goal, steps]
+      properties:
+        id:
+          type: string
+        goal:
+          $ref: "#/components/schemas/InitialLearningPlanRequest"
+        steps:
+          type: array
+          minItems: 3
+          maxItems: 3
+          items:
+            type: object
+            additionalProperties: false
+            required: [id, title, objective]
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              objective:
+                type: string
+    LearningPlanErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum: [VALIDATION_ERROR, PAYLOAD_TOO_LARGE, UNSUPPORTED_MEDIA_TYPE, LEARNING_PLAN_UNAVAILABLE, INTERNAL_ERROR]
+            message:
+              type: string
     HealthResponse:
       type: object
       additionalProperties: false
