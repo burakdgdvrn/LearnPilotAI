@@ -15,7 +15,9 @@ npm run dev
 PowerShell'de kopyalama: `Copy-Item .env.example .env.local`.
 [Uygulama](http://localhost:3000), [sağlık](http://localhost:3000/api/health).
 
-Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfa başlangıç ekranıdır; henüz öğrenme planı, giriş veya inference arayüzü yoktur. Backend `POST /api/learning/plan` ile konu/seviye alıp açıkça etiketli başlangıç planı fixture'ı döndürür. Sağlık endpoint'i ücretli çağrı yapmaz ve gerçek inference başarısını kanıtlamaz.
+Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfada konu/seviye formunu doldurup **Plan oluştur** düğmesine basın; üç adımlık mock plan aynı sayfada görünür. Hazır konu düğmeleriyle Kesirler, Python döngüleri veya İngilizce zamanlarını deneyebilirsiniz. Form mevcut `POST /api/learning/plan` endpoint'ini kullanır; sonucu tarayıcıda gösterir, veri saklamaz. Giriş veya gerçek inference arayüzü yoktur. Sağlık endpoint'i ücretli çağrı yapmaz ve gerçek inference başarısını kanıtlamaz.
+
+Form boş/geçersiz konuda anlaşılır hata gösterir; istek sırasında alanlar devre dışıdır. Sunucu hatası veya bağlantı sorunu sonrasında yeniden denenebilir. Konu/seviye değişince önceki sonuç temizlenir. Nebius/final modundaki 503 yanıtı ekranda gösterilir; yerel sahte başarı/fallback üretilmez.
 
 ```sh
 curl -X POST http://localhost:3000/api/learning/plan -H "Content-Type: application/json" -d '{"topic":"Kesirler","level":"beginner"}'
@@ -72,6 +74,6 @@ DB/auth sağlayıcısı, şema ve öğrenme algoritmaları bilinçli olarak seç
 
 .github/pull_request_template.md değişiklik bilgisini toplar. CI anahtar gerektirmeden check ve smoke çalıştırır. Branch koruması ve gerçek kullanıcılara CODEOWNERS ataması repo yöneticisi tarafından ayrıca yapılmalıdır.
 
-Repo başlangıçta boştu. Kullanıcı onayıyla main yalnızca boş başlangıç commit'iyle oluşturuldu; iskelet setup/shared-foundation-pr dalından PR ile incelenir. İlk setup/shared-foundation dalı korunur. [İnceleme ve başlangıç kararı](docs/REPOSITORY-INSPECTION.md).
+Repo başlangıçta boştu. Proje temeli ve mock öğrenme planı backend'i PR #1 ve #2 ile main'e birleştirildi. İlk setup/shared-foundation dalı korunur ve varsayılan dal hâlâ odur; güncel birleşmiş kod için main'i kullanın. [GitHub deposu](https://github.com/burakdgdvrn/LearnPilotAI), [inceleme ve başlangıç kararı](docs/REPOSITORY-INSPECTION.md).
 
 Derleyici: bu başlangıçta geliştirme ve production için Webpack, Tailwind için PostCSS kullanılır. Yerel Turbopack CSS alt işlemi hatası nedeniyle bu yol seçildi; sürümler kilit dosyasındadır.
