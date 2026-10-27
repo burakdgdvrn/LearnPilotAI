@@ -34,11 +34,11 @@ Varsayılan mod mock'tur, anahtar gerektirmez. Ana sayfa başlangıç ekranıdı
 
 | Alan | Yol | Sorumlu |
 | --- | --- | --- |
-| Frontend | src/frontend, src/app sayfaları | Koltuk 1 (tek UI sahibi) |
-| Backend / API | src/server/api, src/app/api | Koltuk 2 |
-| Database / Auth | src/server/db | Koltuk 3 |
-| AI | src/server/ai | Koltuk 4 |
-| Learning engine | src/server/learning-engine | Koltuk 5 |
+| Frontend | src/frontend, src/app sayfaları | Koltuk 1 — Mete, Asude |
+| Backend / API | src/server/api, src/app/api | Koltuk 2 — Mete, Burak, Asude |
+| Database / Auth | src/server/db | Koltuk 3 — İclal, Çağrı |
+| AI | src/server/ai | Koltuk 4 — İclal, Çağrı |
+| Learning engine | src/server/learning-engine | Koltuk 5 — Burak |
 | Ortak DTO ve sözleşme | src/contracts, docs/API.md | Backend koordine eder, etkilenen sahipler inceler |
 
 İsim atamaları ve ilk işler: [TEAM](docs/TEAM.md). Agent talimatları: [AGENTS](AGENTS.md).
